@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment
+venv/
+.env/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Runtime-generated media
+flaskr/static/uploads/*
+flaskr/static/processed/*
+flaskr/static/tmp/*
+
+# Keep folder structure
+!flaskr/static/uploads/.gitkeep
+!flaskr/static/processed/.gitkeep
+!flaskr/static/tmp/.gitkeep

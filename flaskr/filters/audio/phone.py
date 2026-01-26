@@ -64,3 +64,27 @@ def phone_filter(signal: np.ndarray,
         filtered = filtered / peak
 
     return filtered
+    
+def apply(samples: np.ndarray, fs: int, params: dict) -> np.ndarray:
+    """
+    Wrapper used by the main pipeline.
+    Expects params from template:
+      - phoneSideGain (dB) OR side_attenuation (0..1)
+      - phoneFilterOrder (int) [optional]
+    """
+    # Your implementation uses side_attenuation in [0..1]
+    # Template might send dB, so support both:
+
+    if "side_attenuation" in params:
+        side_att = float(params.get("side_attenuation", 0.3))
+    else:
+        # If template sends dB attenuation, convert dB -> linear factor
+        # 0 dB => 1.0 (no attenuation), negative dB => smaller
+        side_gain_db = float(params.get("phoneSideGain", -10.0))
+        side_att = 10 ** (side_gain_db / 20.0)
+
+    side_att = max(0.0, min(1.0, side_att))
+
+    # If you want to support order from params, you can pass it into bandpass_filter
+    # but your phone_filter currently doesn't accept order param.
+    return phone_filter(samples, fs, side_attenuation=side_att)
