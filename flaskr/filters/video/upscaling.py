@@ -2,10 +2,7 @@ import subprocess
 import os
 
 
-def apply_upscaling(input_path: str,
-                    output_path: str,
-                    width: int,
-                    height: int) -> None:
+def apply_upscaling(input_path: str,output_path: str,width: int,height: int) -> None:
     """
     Upscale video resolution using FFmpeg
     """
