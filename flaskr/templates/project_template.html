@@ -299,29 +299,83 @@
              *
              * */
             const uploadVideo = async () => {
-                const selectedFile = document.getElementById("uploadVideo").files[0]; // retrieves the chosen file
+                const selectedFile = document.getElementById("uploadVideo").files[0];
+                if (!selectedFile) {
+                    alert("Choose a file first.");
+                    return;
+                }
                 const formData = new FormData();
-                formData.append("file", file); // 'file' is the name the server will use to access the file, use the formData as the body
-                // fill me
-                console.error("Unimplemented method uploadVideo");
+                formData.append("file", selectedFile); // FIX: use selectedFile
+
+                const res = await fetch("/upload", { method: "POST", body: formData });
+                const json = await res.json();
+                console.log(json);
+                if (!json.ok) alert(json.error || "Upload failed");
+                else alert("Uploaded!");
             };
 
             const deleteVideo = async () => {
-                // fill me
-                console.error("Unimplemented method deleteVideo");
+                const res = await fetch("/delete", { method: "POST" });
+                const json = await res.json();
+                console.log(json);
+                if (!json.ok) alert(json.error || "Delete failed");
+                else {
+                    clean();
+                    document.getElementById("videoContainer").style.display = "none";
+                    alert("Deleted!");
+                }
             };
+
+            const _propsToParams = (props) => {
+                const params = {};
+                for (const p of props) {
+                    const num = Number(p.value);
+                    params[p.name] = Number.isNaN(num) ? p.value : num;
+                }
+                return params;
+            };
+
             const configureFilters = async () => {
-                // use the variable filterList
-                // fill me
-                console.error("Unimplemented method configureFilters");
+                const audioNames = new Set(["gainCompressor","voiceEnhancement","phone"]);
+                const videoNames = new Set(["grayscale","colorinvert","frameInterpolate"]);
+
+                const cfg = { audio: [], video: [] };
+
+                for (const f of filterList) {
+                    const params = _propsToParams(f.props || []);
+                    if (audioNames.has(f.name)) cfg.audio.push({ name: f.name, params });
+                    else if (videoNames.has(f.name)) cfg.video.push({ name: f.name, params });
+                    else console.warn("Unknown filter:", f.name);
+                }
+
+                const res = await fetch("/configure", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(cfg),
+                });
+                const json = await res.json();
+                console.log(json);
+                if (!json.ok) alert(json.error || "Configure failed");
+                else alert("Configured!");
             };
+
             const applyFilters = async () => {
-                // fill me
-                console.error("Unimplemented method applyFilters")
-            }
+                const res = await fetch("/apply", { method: "POST" });
+                const json = await res.json();
+                console.log(json);
+                if (!json.ok) alert(json.error || "Apply failed");
+                else alert("Applied! Now click Play.");
+            };
+
             const stream = async () => {
-                //fill me
-                console.error("Unimplemented method stream");
+                const container = document.getElementById("videoContainer");
+                container.style.display = "block";
+                const source = container.querySelector("source");
+                source.src = "/static/processed/output.mp4";
+                source.type = "video/mp4";
+                const video = container.querySelector("video");
+                video.load();
+                video.play().catch(() => {});
             };
         </script>
     </body>

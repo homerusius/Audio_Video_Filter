@@ -22,3 +22,8 @@ def apply_frame_interpolation(input_path: str,
 
     subprocess.run(command, check=True)
     print(f"Interpolated video saved to {output_path}")
+    
+def vf(params: dict) -> str:
+    fps = int(params.get("frameInterpolateTargetFps", params.get("fps", 60)))
+    fps = max(1, min(240, fps))
+    return f"minterpolate=fps={fps}"
