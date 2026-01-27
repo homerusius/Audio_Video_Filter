@@ -17,6 +17,9 @@ def apply_grayscale(input_path: str, output_path: str) -> None:
     subprocess.run(command, check=True)
     print(f"Grayscale video saved to {output_path}")
 
+def vf(params: dict) -> str:
+    return "hue=s=0"
+
 def generate_test_video(output_path: str, duration: float = 2.0, frame_rate: int = 30,
                         size: tuple = (320, 240)) -> None:
     """

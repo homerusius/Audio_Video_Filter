@@ -16,3 +16,6 @@ def invert_colors(frame: np.ndarray) -> np.ndarray:
         frame = frame.astype(np.uint8)
 
     return 255 - frame
+    
+def vf(params: dict) -> str:
+    return "negate"
