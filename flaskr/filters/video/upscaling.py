@@ -20,3 +20,9 @@ def apply_upscaling(input_path: str,output_path: str,width: int,height: int) -> 
 
     subprocess.run(command, check=True)
     print(f"Upscaled video saved to {output_path}")
+def vf(params: dict) -> str:
+    width = int(params.get("width", 1920))
+    height = int(params.get("height", 1080))
+    return f"scale={width}:{height}"
+
+

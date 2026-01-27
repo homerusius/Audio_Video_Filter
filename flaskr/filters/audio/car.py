@@ -55,3 +55,7 @@ def car_filter(signal: np.ndarray,fs: int,side_gain: float = 1.5) -> np.ndarray:
         filtered = filtered / peak
 
     return filtered
+def apply(samples: np.ndarray, fs: int, params: dict) -> np.ndarray:
+    side_gain = float(params.get("sideGain", 1.5))
+    return car_filter(samples, fs, side_gain)
+
