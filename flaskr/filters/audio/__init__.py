@@ -23,11 +23,11 @@ def _voiceEnhancement_apply(samples, fs, params):
     return voice_enhancement(samples, fs=fs, alpha=alpha, cutoff=cutoff)
 
 from .phone import apply as phone_apply
-#from .car import apply as car_apply
+from .car import apply as car_apply
 
 AUDIO_FILTERS = {
     "gainCompressor": _gainCompressor_apply,
     "voiceEnhancement": _voiceEnhancement_apply,
     "phone": phone_apply,
-    #"car": car_apply,
+    "car": car_apply,
 }
