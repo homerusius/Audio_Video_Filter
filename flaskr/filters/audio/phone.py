@@ -72,8 +72,6 @@ def apply(samples: np.ndarray, fs: int, params: dict) -> np.ndarray:
       - phoneSideGain (dB) OR side_attenuation (0..1)
       - phoneFilterOrder (int) [optional]
     """
-    # Your implementation uses side_attenuation in [0..1]
-    # Template might send dB, so support both:
 
     if "side_attenuation" in params:
         side_att = float(params.get("side_attenuation", 0.3))
@@ -85,6 +83,4 @@ def apply(samples: np.ndarray, fs: int, params: dict) -> np.ndarray:
 
     side_att = max(0.0, min(1.0, side_att))
 
-    # If you want to support order from params, you can pass it into bandpass_filter
-    # but your phone_filter currently doesn't accept order param.
     return phone_filter(samples, fs, side_attenuation=side_att)

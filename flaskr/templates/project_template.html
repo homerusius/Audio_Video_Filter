@@ -230,9 +230,21 @@
             };
 
             const getProp = (prop_name) => ({ name: prop_name, value: document.getElementById(prop_name).value });
-            const clean = () => {
+            const clean = async () => {
                 filterList = [];
                 refreshFiltersList();
+                try {
+                    const res = await fetch("/configure", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ audio: [], video: [] }),
+                    });
+                    const json = await res.json();
+                    console.log("clean/configure response:", json);
+                }
+                catch (e) {
+                    console.error("Error during clean/configure:", e);
+                }
             };
             const addVideoFilter = () => {
                 const videoFilterSelect = document.getElementById("videoFilter");
